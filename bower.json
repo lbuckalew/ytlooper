@@ -1,0 +1,23 @@
+{
+  "name": "ytlooper",
+  "version": "0.0.0",
+  "authors": [
+    "lbuckalew <louis.buckalew@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1"
+  }
+}

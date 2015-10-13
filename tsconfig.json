@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "out": "./dist/js/ytlc.js"
+  },
+  "files": [
+    "./typings/jquery/jquery.d.ts",
+    "./typings/lodash/lodash.d.ts",
+    "./src/ytlooper.ts"
+  ]
+}

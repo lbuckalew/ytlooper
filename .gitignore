@@ -1,0 +1,9 @@
+# jetbrains
+.idea/
+
+# dependencies
+node_modules/
+bower_components/
+
+# compiled distribution
+dist/
