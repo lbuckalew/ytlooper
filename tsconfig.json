@@ -3,12 +3,13 @@
     "target": "es6",
     "noImplicitAny": true,
     "removeComments": true,
+    "preserveConstEnums": true,
     "sourceMap": true,
     "out": "./dist/js/ytlc.js"
   },
   "files": [
     "./typings/jquery/jquery.d.ts",
     "./typings/lodash/lodash.d.ts",
-    "./src/ytlooper.ts"
+    "./src/scripts/ts/ytl.ts"
   ]
 }

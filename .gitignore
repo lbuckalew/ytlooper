@@ -4,6 +4,8 @@
 # dependencies
 node_modules/
 bower_components/
+src/styles/scss/Materialize/
+src/styles/css
 
 # compiled distribution
 dist/

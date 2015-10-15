@@ -1,0 +1,51 @@
+<div id="app" class="row">
+
+    <!-- Dropdown Structure -->
+    <ul id="videoHistoryDropdown" class="dropdown-content">
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+    </ul>
+    <nav id="optionsNav" class="indigo">
+        <div class="nav-wrapper">
+            <ul class="left">
+                <!-- Dropdown Trigger -->
+                <li><a class="dropdown-button" href="#!" data-activates="videoHistoryDropdown">
+                    Video history<i class="small material-icons left">video_library</i></a></li>
+            </ul>
+            <ul class="right">
+                <!-- Dropdown Trigger -->
+                <li><a id="minimize" href="#!"><i class="material-icons">expand_less</i></a></li>
+                <li><a id="maximize" href="#!"><i class="material-icons">expand_more</i></a></li>
+                <li><a id="appClose" href="#!"><i class="material-icons">close</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <input id="urlInput" type="text"/>
+
+    <div id="videoContainer" class="amber accent-1">
+        <h5 class="center-align">No video selected</h5>
+        <h5 class="center-align"><i class="large material-icons">videocam_off</i></h5>
+        <h5 class="center-align">Ctrl + V or select from history</h5>
+    </div>
+
+    <nav id="controlNav" class="indigo lighten-2">
+        <div class="nav-wrapper">
+            <ul class="left">
+                <li><a id="skipPrevButton" href="#!"><i class="material-icons">skip_previous</i></a></li>
+                <li><a id="pauseButton" href="#!"><i class="material-icons">pause</i></a></li>
+                <li><a id="playButton" href="#!"><i class="material-icons">play_arrow</i></a></li>
+                <li><a id="skipNextButton" href="#!"><i class="material-icons">skip_next</i></a></li>
+                <li><a id="repeatButton" href="#!"><i class="material-icons">replay</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="loopListContainer">
+        <ul id="loopList" class="collection">
+        </ul>
+    </div>
+
+</div>

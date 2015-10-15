@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+// Mixins
+@import "../Materialize/components/prefixer";
+@import "../Materialize/components/mixins";
+@import "../Materialize/components/color";
+
+// Variables;
+@import "components/variables";
+
+// Reset
+@import "../Materialize/components/normalize";
+
+// components
+@import "../Materialize/components/global";
+@import "../Materialize/components/icons-material-design";
+@import "../Materialize/components/grid";
+@import "../Materialize/components/navbar";
+@import "../Materialize/components/roboto";
+@import "../Materialize/components/typography";
+@import "../Materialize/components/cards";
+@import "../Materialize/components/toast";
+@import "../Materialize/components/tabs";
+@import "../Materialize/components/tooltip";
+@import "../Materialize/components/buttons";
+@import "../Materialize/components/dropdown";
+@import "../Materialize/components/waves";
+@import "../Materialize/components/modal";
+@import "../Materialize/components/collapsible";
+@import "../Materialize/components/chips";
+@import "../Materialize/components/materialbox";
+@import "../Materialize/components/form";
+@import "../Materialize/components/table_of_contents";
+@import "../Materialize/components/sideNav";
+@import "../Materialize/components/preloader";
+@import "../Materialize/components/slider";
+@import "../Materialize/components/date_picker/default.scss";
+@import "../Materialize/components/date_picker/default.date.scss";
+@import "../Materialize/components/date_picker/default.time.scss";
+
+#mainNav {
+    margin-bottom: 2%;
+
+    .brand-logo {
+        margin-left: 3%;
+    }
+}
+#urlInput {
+    position: absolute;
+    left: 1000em;
+}
+#videoContainer {
+    height: 380px;
+    padding-top: 11%;
+
+    h5 {
+        margin: 0px;
+    }
+}
+#videoContainer iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#loopListContainer {
+    max-height: 20em;
+    overflow-y: scroll;
+}
+#loopList {
+    margin-top: 0px;
+}
