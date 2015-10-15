@@ -15,7 +15,7 @@ var paths = {
     'int': {
         'javascript': ['./src/scripts/js/**/*.js'],
         'typescript': ['./src/scripts/ts/**/*.ts'],
-        'scss': ['./src/styles/scss/YTL/ytl.scss'],
+        'scss': ['./src/styles/scss/**/*.scss'],
         'css': ['./src/styles/css/*.css'],
     },
     'ext': {
@@ -50,10 +50,10 @@ gulp.task('watch', function(){
 });
 
 gulp.task('ts-compile', function() {
-    return gulp.src(paths.int.typescript)
+    return project.src()
         .pipe(typescript(project)).js
         .pipe(babel())
-        .pipe(gulp.dest('.'));
+        .pipe(gulp.dest('./src/scripts/js/'));
 });
 gulp.task('js-dist', ['ts-compile'], function() {
     var blob = paths.ext.jquery.concat(paths.ext.lodash, paths.ext.materializeJS, paths.int.javascript);

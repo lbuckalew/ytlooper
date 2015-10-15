@@ -1,66 +1,112 @@
 'use strict';
 
 module Effigies {
-    export enum Representation {Generic, List, Detail, Create}
+    export enum REPRESENTATION {Generic, List, Detail, Create}
 
     export interface ViewOptions {
-        type: Representation,
-        template: string,
-        container: string,
-        events: {}
+        rep: REPRESENTATION,
+        tpl: string,
+        tgt: string,
+        evt?: {}
     }
     export class View {
-        type: Representation,
-        template: string,
-        container: string,
-        events: {}
-
+        representation: REPRESENTATION;
+        templateSelector: string;
+        executor: _.TemplateExecutor;
+        container: string;
+        events: {};
+        HTMLcache: HTMLElement;
         constructor(options: ViewOptions) {
-            this.type = options.type;
-            this.template = options.template,
-            this.container = options.container,
-            this.events = options.events;
+            this.representation = options.rep;
+            this.templateSelector = options.tpl,
+            this.executor = _.template($(options.tpl).html());
+            this.container = options.tgt,
+            this.events = options.evt;
+        }
+        compile(attrs: {}): void {
+            let html = this.executor(attrs);
+            this.HTMLcache = $('<div></div>').append(html).children()[0];
+        }
+        get(recompile?: boolean, attrs?: {}): HTMLElement {
+            if (recompile || !this.HTMLcache) {
+                this.compile(attrs);
+            }
+            return this.HTMLcache;
         }
     }
 
+    export interface EffigyRepresentationHash {
+        List: View,
+        Detail: View,
+        Create: View
+    }
     export interface EffigyOptions {
         id?: number,
-        views: View[]
+        views: EffigyRepresentationHash
     }
-    export class Model {
+    export class Effigy {
         private _id: number;
 
-        options: ModelOptions;
-        executors: {};
-        views: Views[];
-        activeViews: [];
+        options: EffigyOptions;
+        views: EffigyRepresentationHash;
+        activeViews: View[];
 
-        constructor(options: ModelOptions) {
+        constructor(options: EffigyOptions) {
             this.options = options;
             this._id = options.id;
             this.views = options.views;
-            for (var item of this.views) {
-                this.executors[Representation[item.type]] = _.template($(item.template).html());
-            }
         }
         validate(): Error[] {return null;}
         serialize(): Object {return null;}
         fetch(): any {return null;}
         save(): Error {return null;}
 
-        render(): void {}
+        attachView(rep: REPRESENTATION, viewOptions: ViewOptions) : void {
+            let view = new View({
+                rep: viewOptions.rep,
+                tpl: viewOptions.tpl,
+                tgt: viewOptions.tgt,
+                evt: viewOptions.evt
+            });
+            this.views[rep] = view;
+        }
+
+        render(rep: REPRESENTATION, target: HTMLElement): void {
+            // get cached HTML based on representation or re-compile
+            let view = this.views[rep];
+            target.replaceChild(view.get(), target.firstChild);
+        }
     }
 
-    export interface LoopOptions {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    export interface LoopOptions extends EffigyOptions {
         name: string,
         start?: number,
         stop?: number
     }
-
-    export class Loop extends Model {
+    export class Loop extends Effigy {
         private _name: string;
         private _start: number;
         private _stop: number;
+
         constructor(options: LoopOptions) {
             super(options);
             this._name = options.name;
@@ -88,20 +134,21 @@ module Effigies {
         }
         validate(): Error[] {
             let errors: Error[];
-            if (this.start >= this.stop) {
+            if (false) {
                 errors.push(new Error('Start time must come before end time.'));
             }
             return errors;
         }
     }
 
-    export interface VideoOptions {
+    export interface VideoOptions extends EffigyOptions {
         YTid: string,
         title?: string
     }
-    export class Video extends Model {
+    export class Video extends Effigy {
         private _YTid: string;
         private _title: string;
+
         constructor(options: VideoOptions) {
             super(options);
             this._YTid = options.YTid;
