@@ -2,7 +2,13 @@
 
 module Effigies {
     export enum REPRESENTATION {Generic, List, Detail, Create}
+    EVENT_STRING_REGEX: RegExpConstructor = /(\w*)\b (\S*)\b/;
 
+    interface ViewEvent {
+        selector: string,
+        event: string,
+        callback: (ev: Event) => any
+    }
     export interface ViewOptions {
         rep: REPRESENTATION,
         tpl: string,
@@ -14,18 +20,30 @@ module Effigies {
         templateSelector: string;
         executor: _.TemplateExecutor;
         container: string;
-        events: {};
+        eventHash: {};
+        events: ViewEvent[];
         HTMLcache: HTMLElement;
         constructor(options: ViewOptions) {
             this.representation = options.rep;
             this.templateSelector = options.tpl,
             this.executor = _.template($(options.tpl).html());
-            this.container = options.tgt,
-            this.events = options.evt;
+            this.container = options.tgt;
+            this.processEvents();
         }
         compile(attrs: {}): void {
             let html = this.executor(attrs);
             this.HTMLcache = $('<div></div>').append(html).children()[0];
+        }
+        processEvents(): void {
+            for (let e in this.eventHash) {
+                let desc = e.key;
+                let cb = e.value;
+            }
+        }
+        delegateEvents(): void {
+            for (let binding in this.events) {
+
+            }
         }
         get(recompile?: boolean, attrs?: {}): HTMLElement {
             if (recompile || !this.HTMLcache) {
@@ -60,7 +78,6 @@ module Effigies {
         serialize(): Object {return null;}
         fetch(): any {return null;}
         save(): Error {return null;}
-
         attachView(rep: REPRESENTATION, viewOptions: ViewOptions) : void {
             let view = new View({
                 rep: viewOptions.rep,
@@ -69,12 +86,6 @@ module Effigies {
                 evt: viewOptions.evt
             });
             this.views[rep] = view;
-        }
-
-        render(rep: REPRESENTATION, target: HTMLElement): void {
-            // get cached HTML based on representation or re-compile
-            let view = this.views[rep];
-            target.replaceChild(view.get(), target.firstChild);
         }
     }
 

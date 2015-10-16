@@ -32,6 +32,9 @@ module Apps {
         show(): void {
             // change innerHTML of region
             this.el.replaceChild(this.auxView.get(), this.el.firstChild);
+            this.onShow();
+        }
+        onShow(): void {
         }
         reset(): void {
             // clear the container
@@ -66,11 +69,15 @@ module Apps {
 
 var YTL = {};
 $( document ).ready(function() {
-    YTL.App = new Apps.Region({
+    class YTLApp extends Apps.EffigyRegion {
+        onShow(): void {
+            $(this.selector).find('.dropdown-button').dropdown();
+        }
+    }
+    YTL['App'] = new YTLApp({
         rep: Effigies.REPRESENTATION.Generic,
         tgt: '#appContainer',
         tpl: '#app-tpl'
     });
-    YTL.App.show();
-    $('.dropdown-button').dropdown();
+    YTL['App'].show();
 });
