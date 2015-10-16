@@ -2,9 +2,9 @@
 
 module Effigies {
     export enum REPRESENTATION {Generic, List, Detail, Create}
-    EVENT_STRING_REGEX: RegExpConstructor = /(\w*)\b (\S*)\b/;
+    var EVENT_STRING_REGEX: RegExp = /(\w*)\b (\S*)\b/;
 
-    interface ViewEvent {
+    export interface ViewEvent {
         selector: string,
         event: string,
         callback: (ev: Event) => any
@@ -13,7 +13,8 @@ module Effigies {
         rep: REPRESENTATION,
         tpl: string,
         tgt: string,
-        evt?: {}
+        evt?: {},
+        cbObject?: Apps.Region
     }
     export class View {
         representation: REPRESENTATION;
@@ -25,30 +26,42 @@ module Effigies {
         HTMLcache: HTMLElement;
         constructor(options: ViewOptions) {
             this.representation = options.rep;
-            this.templateSelector = options.tpl,
+            this.templateSelector = options.tpl;
             this.executor = _.template($(options.tpl).html());
             this.container = options.tgt;
-            this.processEvents();
+            this.eventHash = options.evt;
+            this.events = [];
+            this.processEvents(options.cbObject);
+
         }
         compile(attrs: {}): void {
             let html = this.executor(attrs);
             this.HTMLcache = $('<div></div>').append(html).children()[0];
         }
-        processEvents(): void {
-            for (let e in this.eventHash) {
-                let desc = e.key;
-                let cb = e.value;
+        processEvents(cbObject: Apps.Region): void {
+            for (var e in this.eventHash) {
+                let r = EVENT_STRING_REGEX.exec(e);
+                let cb = this.eventHash[e];
+                let event: ViewEvent = {selector: r[2], event: r[1], callback: cbObject[cb]};
+                this.events.push(event);
             }
         }
         delegateEvents(): void {
-            for (let binding in this.events) {
-
+            for(var event in this.events) {
+                event = this.events[event];
+                console.log(event);
+                if (event.event === 'click') {
+                    console.log('click event detected');
+                    console.log($(this.get()).filter(event.selector));
+                }
             }
         }
-        get(recompile?: boolean, attrs?: {}): HTMLElement {
+        get(recompile?: boolean, events = true, attrs?: {}): HTMLElement {
             if (recompile || !this.HTMLcache) {
                 this.compile(attrs);
             }
+            if (events) this.delegateEvents();
+
             return this.HTMLcache;
         }
     }

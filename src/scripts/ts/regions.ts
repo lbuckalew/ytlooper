@@ -7,7 +7,8 @@ module Apps {
     export interface RegionOptions {
         rep: Effigies.REPRESENTATION,
         tgt: string,
-        tpl?: string
+        tpl?: string,
+        evt?: {}
     }
     export class Region {
         options: RegionOptions;
@@ -15,6 +16,7 @@ module Apps {
         selector: string;
         el: HTMLElement;
         auxView: Effigies.View;
+        auxEventsHash: {};
 
         constructor(options: RegionOptions) {
             this.options = options;
@@ -22,12 +24,15 @@ module Apps {
             this.selector = options.tgt;
             this.el = $(this.selector)[0];
             if (options.tpl) {
+                this.auxEventsHash = options.evt;
                 this.auxView = new Effigies.View({
                     rep: Effigies.REPRESENTATION.Generic,
                     tpl: options.tpl,
-                    tgt: this.selector
+                    tgt: this.selector,
+                    evt: this.auxEventsHash,
+                    cbObject: this
                 });
-            };
+            }
         }
         show(): void {
             // change innerHTML of region
@@ -68,16 +73,24 @@ module Apps {
 }
 
 var YTL = {};
-$( document ).ready(function() {
-    class YTLApp extends Apps.EffigyRegion {
-        onShow(): void {
-            $(this.selector).find('.dropdown-button').dropdown();
-        }
+class YTLApp extends Apps.Region {
+    constructor(options: Apps.RegionOptions) {
+        super(options);
     }
+    onShow(): void {
+        $(this.selector).find('.dropdown-button').dropdown();
+    }
+    closeApp(): void {
+        alert('smoke a grav nigga');
+    }
+}
+$( document ).ready(function() {
     YTL['App'] = new YTLApp({
         rep: Effigies.REPRESENTATION.Generic,
         tgt: '#appContainer',
-        tpl: '#app-tpl'
+        tpl: '#app-tpl',
+        evt: {'click #appClose': 'closeApp'}
     });
     YTL['App'].show();
+    console.log(YTL['App'])
 });
